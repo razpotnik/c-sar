@@ -20,6 +20,6 @@ Example usage:
 - ``c-sar 5 -i plaintext.txt`` will encrypt the contents of file ``plaintext.txt`` with the key 5.
 
 # Known issues
-- Currently only supports lowercase English letters (a-z) (other characters are simply copied to the cipher as they are). *Support for custom alphabets and capitalization are planned future features.*
+- Currently only supports English letters (a-z) (other characters are simply copied to the cipher as they are). *Support for custom alphabets is planned for the future.*
 - Currently only supports positive keys. This means that you will need to use -n mod 26 (where n is the key) to decrypt a cipher. *This will be fixed at some point.*
 - Currently only works on POSIX systems. This is due to how the program reads files. *Windows support is planned for the future.*
