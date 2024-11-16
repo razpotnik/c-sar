@@ -151,7 +151,6 @@ char *capitalize(char *s, bool *cap)
             if (cap[i])
                 {
                     s[i] = (char) toupper(s[i]);
-                    printf("%s\n", s);
                 }
         }
     return s;
