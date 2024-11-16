@@ -5,30 +5,34 @@
 #include <string.h>
 #include <ctype.h>
 
-char *parseOptions(int argc, char *argv[], char *filepath, bool *tryAllKeys);
+char *parseOptions(int argc, char *argv[], char *filepath,
+                   bool *tryAllKeys, int *key);
 void printUsageExit(char *argv[]);
 char *encrypt(char *input, int key, char *alphabet, char *output);
 int findCharIndex(char c, char *alphabet);
 bool *checkCapitalization(char *s, bool *cap);
 char *capitalize(char *s, bool *cap);
 
-char *PROGRAM_VERSION = "1.1";
+char *PROGRAM_VERSION = "1.2";
 
 /* A simple caesar cipher program written by Oliver Razpotnik.
  * Supports encrypting command-line-supplied strings or files.
  * 
- * Version: 1.1(Capitalization support)
- * Now supports capitalization!
+ * Version: 1.2(Negative key support)
+ * Now supports negative keys!
  *
- * TODO custom alphabets, negative keys.
+ * History:
+ * 1.1(Capitalization support)
+ * 1.0(First public version)
  */
 int main(int argc, char *argv[])
 {
     bool tryAllKeys = false;
     char *filepath = "";
     char *inputString;
+    int key = 0;
 
-    filepath = parseOptions(argc, argv, filepath, &tryAllKeys);
+    filepath = parseOptions(argc, argv, filepath, &tryAllKeys, &key);
 
     if (argc < 3) printUsageExit(argv);
     
@@ -70,7 +74,10 @@ int main(int argc, char *argv[])
         }
     else
         {
-            int key = strtol(argv[optind], NULL, 10);
+            if (key == 0)
+                {
+                    key = strtol(argv[optind], NULL, 10);
+                }
             decodedString = encrypt(inputString, key, alphabet, decodedString);
             decodedString = capitalize(decodedString, cap);
             fprintf(stdout, "%s\n", decodedString);
@@ -159,10 +166,11 @@ char *capitalize(char *s, bool *cap)
 /* Parse command-line options, setting option variables.
  *
  */
-char *parseOptions(int argc, char *argv[], char *input, bool *tryAllKeys)
+char *parseOptions(int argc, char *argv[], char *input,
+                   bool *tryAllKeys, int *key)
 {
 
-    char *opts = "vi:ah";
+    char *opts = "vi:ah1234567890";
     int opt;
 
     while((opt=getopt(argc, argv,opts)) != -1)
@@ -188,6 +196,18 @@ char *parseOptions(int argc, char *argv[], char *input, bool *tryAllKeys)
                     fprintf(stderr, "    -i: Specify a file to encrypt\n");
                     fprintf(stderr, "    -a: Show all permutations\n");
                     exit(EXIT_SUCCESS);
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                case '7':
+                case '8':
+                case '9':
+                case '0': // Negative key support
+                    *key = atoi(argv[1]);
+                    break;
                 default: // Incorrect usage
                     printUsageExit(argv);
                 }
