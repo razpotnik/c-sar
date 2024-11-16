@@ -12,15 +12,15 @@ int findCharIndex(char c, char *alphabet);
 bool *checkCapitalization(char *s, bool *cap);
 char *capitalize(char *s, bool *cap);
 
-char *PROGRAM_VERSION = "1.0";
+char *PROGRAM_VERSION = "1.1";
 
 /* A simple caesar cipher program written by Oliver Razpotnik.
  * Supports encrypting command-line-supplied strings or files.
  * 
- * Version: 1.0 (First public version)
- * Currently only supports encryption of lowercase characters.
+ * Version: 1.1(Capitalization support)
+ * Now supports capitalization!
  *
- * TODO uppercase characters, custom alphabets, negative keys.
+ * TODO custom alphabets, negative keys.
  */
 int main(int argc, char *argv[])
 {
