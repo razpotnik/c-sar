@@ -128,7 +128,7 @@ char *parseOptions(int argc, char *argv[], char *input, bool *tryAllKeys)
                     *tryAllKeys = true;
                     break;
                 case 'h': // Show help
-                    fprintf(stderr, "c-sar: a simple Caesar cipher en-/de-crypter\n")
+                    fprintf(stderr, "c-sar: a simple Caesar cipher en-/de-crypter\n");
                     fprintf(stderr, "Usage: %s [key] [string] [-i inputfile] [-a]\n\n",
                             argv[0]);
                     fprintf(stderr, "   key: Specify a key (positive integer)\n");
