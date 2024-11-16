@@ -9,7 +9,7 @@ void printUsageExit(char *argv[]);
 char *encrypt(char *input, int key, char *alphabet, char *output);
 int findCharIndex(char c, char *alphabet);
 bool *checkCapitalizaton(char *s, bool *cap);
-
+char *capitalize(char *s, bool *cap);
 
 char *PROGRAM_VERSION = "1.0";
 
@@ -122,6 +122,26 @@ bool *checkCapitalizaton(char *s, bool *cap)
             cap[i] = isupper(s[i]);
         }
     return cap;
+}
+
+/* capitalize
+ * Capitalizes characters in char array based on capitalization array.
+ * If the bool at index i in capitalization array is true,
+ * capitalize corresponding character in char array.
+ * s: the char array to capitalize
+ * cap: the bool array for capitalization
+ * returns: the capitalized char array
+ */
+char *capitalize(char *s, bool *cap)
+{
+    for (int i = 0; i < strlen(s); i++)
+        {
+            if (cap[i])
+                {
+                    s[i] = (char) toupper(s[i]);
+                }
+        }
+    return s;
 }
 
 /* Parse command-line options, setting option variables.
