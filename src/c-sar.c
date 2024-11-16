@@ -8,6 +8,8 @@ char *parseOptions(int argc, char *argv[], char *filepath, bool *tryAllKeys);
 void printUsageExit(char *argv[]);
 char *encrypt(char *input, int key, char *alphabet, char *output);
 int findCharIndex(char c, char *alphabet);
+bool *checkCapitalizaton(char *s, bool *cap);
+
 
 char *PROGRAM_VERSION = "1.0";
 
@@ -103,6 +105,23 @@ int findCharIndex(char c, char *alphabet)
             if (c == alphabet[i]) return i;
         }
     return -1;
+}
+
+
+/* checkCapitalization
+ * Checks capitalization of chars in char array and constructs bool array.
+ * If the character at index i is uppercase, puts true at index i in cap.
+ * s: the char array to check
+ * cap: the bool array for capitalization
+ * returns: the bool array
+ */
+bool *checkCapitalizaton(char *s, bool *cap)
+{
+    for (int i = 0; i < strlen(s); i++)
+        {
+            cap[i] = isupper(s[i]);
+        }
+    return cap;
 }
 
 /* Parse command-line options, setting option variables.
