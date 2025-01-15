@@ -61,6 +61,8 @@ int main(int argc, char *argv[])
         {
             inputString[i] = (char) tolower(inputString[i]);
         }
+
+    int retval = 1;
     
     if (tryAllKeys)
         {
@@ -70,7 +72,7 @@ int main(int argc, char *argv[])
                     decodedString = capitalize(decodedString, cap);
                     fprintf(stdout, "%d:    %s\n", i, decodedString);
                 }
-            return 0;
+            retval = 0;
         }
     else
         {
@@ -81,11 +83,12 @@ int main(int argc, char *argv[])
             decodedString = encrypt(inputString, key, alphabet, decodedString);
             decodedString = capitalize(decodedString, cap);
             fprintf(stdout, "%s\n", decodedString);
-            return 0;
+            retval = 0;
         }
 
     free(decodedString);
-    return 1;
+    free(cap);
+    return retval;
 }
 
 /* encrypt
