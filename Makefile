@@ -1,8 +1,11 @@
 CC = gcc
 
-CFLAGS = -g -c
+CFLAGS = -c
 
 all: c-sar
+
+debug: CFLAGS += -g
+debug: c-sar
 
 clean: c-sar
 	rm *.o

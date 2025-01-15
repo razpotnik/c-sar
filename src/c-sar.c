@@ -13,15 +13,16 @@ int findCharIndex(char c, char *alphabet);
 bool *checkCapitalization(char *s, bool *cap);
 char *capitalize(char *s, bool *cap);
 
-char *PROGRAM_VERSION = "1.2";
+char *PROGRAM_VERSION = "1.3";
 
 /* A simple caesar cipher program written by Oliver Razpotnik.
  * Supports encrypting command-line-supplied strings or files.
  * 
- * Version: 1.2(Negative key support)
- * Now supports negative keys!
+ * Version: 1.3(Memleak fixes)
+ * Now with less memory leaks!
  *
  * History:
+ * 1.2(Negative key support)
  * 1.1(Capitalization support)
  * 1.0(First public version)
  */
@@ -61,6 +62,8 @@ int main(int argc, char *argv[])
         {
             inputString[i] = (char) tolower(inputString[i]);
         }
+
+    int retval = 1;
     
     if (tryAllKeys)
         {
@@ -70,7 +73,7 @@ int main(int argc, char *argv[])
                     decodedString = capitalize(decodedString, cap);
                     fprintf(stdout, "%d:    %s\n", i, decodedString);
                 }
-            return 0;
+            retval = 0;
         }
     else
         {
@@ -81,11 +84,12 @@ int main(int argc, char *argv[])
             decodedString = encrypt(inputString, key, alphabet, decodedString);
             decodedString = capitalize(decodedString, cap);
             fprintf(stdout, "%s\n", decodedString);
-            return 0;
+            retval = 0;
         }
 
     free(decodedString);
-    return 1;
+    free(cap);
+    return retval;
 }
 
 /* encrypt
