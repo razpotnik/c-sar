@@ -53,7 +53,8 @@ int main(int argc, char *argv[])
         }
 
     int inputlen = strlen(inputString);
-    char *decodedString = calloc(inputlen, sizeof(char));
+    char *decodedString = calloc(inputlen+1, sizeof(char));
+    decodedString[inputlen] = '\0';
     bool *cap = calloc(inputlen, sizeof(bool));
 
     cap = checkCapitalization(inputString, cap);
