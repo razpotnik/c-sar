@@ -12,16 +12,18 @@ char *encrypt(char *input, int key, char *alphabet, char *output);
 int findCharIndex(char c, char *alphabet);
 bool *checkCapitalization(char *s, bool *cap);
 char *capitalize(char *s, bool *cap);
+int modulo(int a, int b);
 
-char *PROGRAM_VERSION = "1.3";
+char *PROGRAM_VERSION = "1.4";
 
 /* A simple caesar cipher program written by Oliver Razpotnik.
  * Supports encrypting command-line-supplied strings or files.
  * 
- * Version: 1.3(Memleak fixes)
- * Now with less memory leaks!
+ * Version: 1.4(Negative key fixes)
+ * Now with *working* negative keys! (fixes modulo issue and argument parsing)
  *
  * History:
+ * 1.3(Memleak fixes)
  * 1.2(Negative key support)
  * 1.1(Capitalization support)
  * 1.0(First public version)
@@ -109,7 +111,7 @@ char *encrypt(char *input, int key, char *alphabet, char *output)
             char currentChar = input[i];
             int currentCharIndex = findCharIndex(currentChar, alphabet);
             if (currentCharIndex != -1) {
-                output[i] = alphabet[(currentCharIndex + key) % strlen(alphabet)];
+                output[i] = alphabet[modulo((currentCharIndex + key), (int) strlen(alphabet))];
             } else output[i] = input[i];
         
         }
@@ -188,14 +190,14 @@ char *parseOptions(int argc, char *argv[], char *input,
                 case 'i': // Specify input file
                     input = optarg;
                     break;
-                case 'a': // Try all keys (1-25) - in case key is unknown
+                case 'a': // Try all keys
                     *tryAllKeys = true;
                     break;
                 case 'h': // Show help
                     fprintf(stderr, "c-sar: a simple Caesar cipher en-/de-crypter\n");
                     fprintf(stderr, "Usage: %s [key] [string] [-i inputfile] [-a]\n\n",
                             argv[0]);
-                    fprintf(stderr, "   key: Specify a key (positive integer)\n");
+                    fprintf(stderr, "   key: Specify a key (integer)\n");
                     fprintf(stderr, "string: String to encrypt\n");
                     fprintf(stderr, "    -v: Print the program version\n");
                     fprintf(stderr, "    -i: Specify a file to encrypt\n");
@@ -211,7 +213,7 @@ char *parseOptions(int argc, char *argv[], char *input,
                 case '8':
                 case '9':
                 case '0': // Negative key support
-                    *key = atoi(argv[1]);
+                    *key = atoi(argv[optind - 1]);
                     break;
                 default: // Incorrect usage
                     printUsageExit(argv);
@@ -226,4 +228,21 @@ void printUsageExit(char *argv[])
 {
     fprintf(stderr, "Incorrect usage! Usage: %s key [string] [-i inputfile] [-a]\n", argv[0]);
     exit(EXIT_FAILURE);
+}
+
+/* modulo
+ * Calculates the euclidian modulo of two integers.
+ * Returns 0 if b is 0.
+ * a: the first integer
+ * b: the second integer
+ * Returns: the euclidian modulo of a and b (or 0, if b is 0).
+ */
+int modulo(int a, int b)
+{
+    if(b == 0)
+        {
+            return 0;
+        }
+
+    return(((a % b) + b) % b);
 }
